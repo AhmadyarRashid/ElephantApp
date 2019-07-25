@@ -1,0 +1,32 @@
+
+@import "~bootstrap/dist/css/bootstrap.min.css";
+.header {    
+  padding-left : 0px !important;
+} 
+.header .logo {
+  width: 120px;
+  height: 31px;  
+  float: left;
+}
+.header .logo img {
+  width: 200px;
+  height: 65px;
+}
+.card{
+  top: 20vh;
+  max-width: 100%;
+}
+.login-form {
+  max-width: 100%;
+}
+.login-form-forgot {
+  float: right;
+}
+.login-form-button {
+  width: 100%;
+}
+
+.ant-layout-content > div{
+height: 100%;
+padding-top: 5px !important;
+}

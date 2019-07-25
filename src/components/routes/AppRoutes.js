@@ -20,6 +20,8 @@ import Category from "../ItemMaster/categories/Category";
 import ItemEntry from "../ItemEntry";
 import UsersList from "../userManagement/auth/UsersList";
 import Answer from '../Answer';
+import Questions from '../Questions';
+import Candidate from '../Candidate';
 
 class AppRoutes extends Component {
   render() {
@@ -27,6 +29,8 @@ class AppRoutes extends Component {
       <Switch>
         <PrivateRoute path="/" exact component={Home} />
         <PrivateRoute path="/answer" exact component={Answer} />
+        <PrivateRoute path="/questions" exact component={Questions} />
+        <PrivateRoute path="/candidate" exact component={Candidate} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <PrivateRoute path="/users" component={UsersList} />

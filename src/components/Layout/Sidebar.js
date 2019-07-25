@@ -20,12 +20,18 @@ class Sidebar extends React.Component {
         collapsible
         collapsed={this.state.collapsed}
         onCollapse={this.onCollapse}
-        style={{ background: "#fff" }}
+        style={{ background: "#00000" }}
       >
-        <Menu theme="light" mode="inline">
+        <Menu theme="dark" mode="inline">
 
+          <Menu.Item key="4">
+            <Link to='/candidate'>
+              <Icon type="user" />
+              <span>Candidate</span>
+            </Link>
+          </Menu.Item>
           <Menu.Item key="5">
-            <Icon type="file" />
+            <Icon type="table" />
             <span>Tables</span>
           </Menu.Item>
           <Menu.Item key="6">
@@ -35,8 +41,10 @@ class Sidebar extends React.Component {
             </Link>
           </Menu.Item>
           <Menu.Item key="7">
-            <Icon type="file" />
-            <span>Questions</span>
+            <Link to="/questions">
+              <Icon type="file" />
+              <span>Questions</span>
+            </Link>
           </Menu.Item>
 
         </Menu>

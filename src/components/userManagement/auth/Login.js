@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import Axios from 'axios';
 import { withRouter } from 'react-router-dom';
-import {setAuthToken} from '../../../utils/setAuthToken';
+import setAuthToken from '../../../utils/setAuthToken';
 
 
 class Login extends Component {
@@ -33,6 +33,7 @@ class Login extends Component {
             if (user.email == this.state.email) {
               console.log('token', res.data.token);
               console.log('id', user.pk)
+              setAuthToken(res.data.token);
               localStorage.setItem('token', res.data.token);
               localStorage.setItem('user_id', user.pk);
               this.props.history.push('/');
@@ -61,8 +62,10 @@ class Login extends Component {
                 <Card className="p-4">
                   <CardBody>
                     <Form onSubmit={(e) => this.handlerLogin(e)}>
-                      <h1>Login</h1>
-
+                  
+                      <center>
+                      <img src={require('../../../images/logo.png')} width={200} height={75} />
+                      </center>
                       <p className="text-muted">Sign In to your account</p>
                       <InputGroup className="mb-3">
                         <Input type="email" value={this.state.email} onChange={e => this.setState({ email: e.target.value })} required placeholder="Email" autoComplete="email" />

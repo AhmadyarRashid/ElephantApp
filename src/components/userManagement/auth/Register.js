@@ -56,7 +56,9 @@ class Register extends Component {
               <Card className="mx-4">
                 <CardBody className="p-4">
                   <Form onSubmit={(e) => this.handlerForm(e)}>
-                    <h1>Register</h1>
+                  <center>
+                  <img src={require('../../../images/logo.png')} width={200} height={75} />
+                  </center>
                     <p className="text-muted">Create your account</p>
                     <InputGroup className="mb-3">
                       <Input type="text" required value={this.state.name} onChange={e => this.setState({ name: e.target.value })} placeholder="Username" autoComplete="username" />

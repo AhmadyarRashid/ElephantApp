@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import DefaultLayout from "./Layout/DefaultLayout";
-import { Table } from "antd";
 import axios from 'axios';
+import { Form, Icon, Input, Button, Menu, Dropdown, Modal, Table } from 'antd';
 
 const { Column, ColumnGroup } = Table;
 
@@ -13,11 +13,24 @@ class Answer extends Component {
             answers: [],
             resource: [],
             resume: [],
-            resumedata: []
+            resumedata: [],
+            campigns: []
         };
     }
 
     componentDidMount() {
+
+        axios.get('http://system.elepha.io/api/v1/campaigns')
+        .then(res => {
+            console.log(res.data);
+            let res2 = res.data;
+            this.setState({
+                campigns: res2
+            })
+        }).catch(e => {
+            console.log(e);
+        })
+
         axios
             .get('http://system.elepha.io/api/v1/answer/')
             .then(res => {
@@ -70,6 +83,11 @@ class Answer extends Component {
 
     render() {
 
+        const menu1 = this.state.campigns.map(i => (
+            <Menu.Item key={i.pk} onClick={e => this.handlerMenu(e)}>
+                {i.name}
+            </Menu.Item>
+        ));
         // let arr3 = [];
 
         // this.state.answers.forEach((itm, i) => {
@@ -86,7 +104,7 @@ class Answer extends Component {
 
         // console.log('Joins' , arr3)
 
-        
+
 
 
 
@@ -111,6 +129,12 @@ class Answer extends Component {
 
         return (
             <DefaultLayout title="Answers">
+
+                <Dropdown overlay={<Menu>{menu1}</Menu>} >
+                    <a className="ant-dropdown-link" href="#">
+                        Select Campigns <Icon type="down" />
+                    </a>
+                </Dropdown>
                 <Table dataSource={bomDetails} bordered className="table-responsive table-responsive-md">
                     <Column
                         title="Full Name"

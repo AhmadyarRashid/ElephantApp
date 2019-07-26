@@ -25,14 +25,16 @@ class Sidebar extends React.Component {
         <Menu theme="dark" mode="inline">
 
           <Menu.Item key="4">
+            <Link to='/'>
+              <Icon type="home" />
+              <span>Home</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="5">
             <Link to='/candidate'>
               <Icon type="user" />
               <span>Candidate</span>
             </Link>
-          </Menu.Item>
-          <Menu.Item key="5">
-            <Icon type="table" />
-            <span>Tables</span>
           </Menu.Item>
           <Menu.Item key="6">
             <Link to='/answer'>

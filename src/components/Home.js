@@ -24,7 +24,8 @@ class Home extends React.Component {
       chat_done: 0,
       chat_unknown: 0,
       campigns: [],
-      selectedUser: 'Select User'
+      selectedUser: 'Select User',
+      user_id : 1
     }
   }
 
@@ -32,7 +33,6 @@ class Home extends React.Component {
 
     axios.get('http://system.elepha.io/api/v1/overview')
       .then(res => {
-        console.log(res.data);
         let res2 = res.data[0];
         this.setState({
           calls_made: res2.calls_made,
@@ -46,18 +46,26 @@ class Home extends React.Component {
           chat_unknown: res2.chat_unknown
         })
       }).catch(e => {
-        console.log(e);
-      })
+      }) 
+
+
+    try{
+        let user_id = localStorage.getItem('user_id');
+        this.setState({
+          user_id
+        })
+    } catch(e){
+      alert('Please Login Again');
+    } 
 
     axios.get('http://system.elepha.io/api/v1/campaigns')
       .then(res => {
-        console.log(res.data);
-        let res2 = res.data;
+        let res2 = res.data.filter(i => i.elephauser == this.state.user_id);
         this.setState({
           campigns: res2
         })
       }).catch(e => {
-        console.log(e);
+      
       })
   }
 
@@ -92,7 +100,7 @@ class Home extends React.Component {
         });
 
       }).catch(e => {
-        console.log(e);
+       
       })
   }
 
@@ -120,10 +128,10 @@ class Home extends React.Component {
         <Sidebar />
         <div className="main-content w-100">
           <div className="page-header col-12" style={{ marginTop: -80 }}>
-            <h1>Campaign</h1>
+            <h1>Overview</h1>
             <div className="d-flex no-block flex-wrap align-items-start">
               <div className="form-group col-4">
-                <div className="row">
+                <div className="row">Campaign :
                   <select className="form-control" onChange={e => this.handleMenuClick(e)}>
                     {menu1}
                   </select>

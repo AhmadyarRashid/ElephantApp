@@ -19,41 +19,50 @@ class Questions extends Component {
             visible: false,
             userId: 1,
             label: '',
-            type: '',
+            type: 'Start',
             meta: ''
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentDidMount() {
-        this.props.form.validateFields();
+
+    refreshDataQuestion() {
         axios
             .get('http://system.elepha.io/api/v1/question/')
             .then(res => {
                 if (res) {
-                    // console.log(res);
                     this.setState({
                         questions: res.data
                     })
                 }
             })
             .catch(e => {
-                console.log(e)
+              
             });
 
         axios.get('http://system.elepha.io/api/v1/questionflow/')
             .then(res => {
                 if (res) {
-                    console.log('FLOW', res.data);
                     this.setState({
-                        flow: res.data
+                        flow: res.data,
+
                     })
+                    if (res.data.length > 0) {
+                        this.setState({
+                            questionFlow: res.data[0].pk
+                        })
+                    }
 
                 }
             }).catch(e => {
-                console.log(e)
+              
             })
+    }
+
+    componentDidMount() {
+        this.props.form.validateFields();
+        this.refreshDataQuestion();
 
     }
 
@@ -64,14 +73,12 @@ class Questions extends Component {
     };
 
     handleOk = e => {
-        console.log(e);
         this.setState({
             visible: false,
         });
     };
 
     handleCancel = e => {
-        console.log(e);
         this.setState({
             visible: false,
         });
@@ -82,7 +89,6 @@ class Questions extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 const { Label, Type, Meta } = values;
-                console.log('Received values of form: ', values);
                 let userId;
                 try {
                     userId = localStorage.getItem('user_id');
@@ -104,30 +110,29 @@ class Questions extends Component {
                         alert('Add Sucessfully');
                     })
                     .catch(e => {
-                        console.log(e);
+                    
                     });
             }
         });
     }
 
     handlerMenu(e) {
-        console.log(e.key);
         this.setState({
-            questionFlow: e.key
+            questionFlow: e.target.value
         })
         axios
             .get('http://system.elepha.io/api/v1/question/')
             .then(res => {
                 if (res) {
-                    // console.log(res);
-                    const filterData = res.data.filter(i => i.questionflow == e.key);
+                   
+                    const filterData = res.data.filter(i => i.questionflow == this.state.questionFlow);
                     this.setState({
                         questions: filterData
                     })
                 }
             })
             .catch(e => {
-                console.log(e)
+               
             });
     }
 
@@ -148,7 +153,7 @@ class Questions extends Component {
                         }
                     })
                     .catch(e => {
-                        console.log(e);
+                        alert('Some Network Error');
                     })
             }
         })
@@ -202,168 +207,213 @@ class Questions extends Component {
                         meta: ''
                     })
                     alert('Add Sucessfully');
+                    this.refreshDataQuestion();
                 })
                 .catch(e => {
-                    console.log(e);
+                   
                 });
         }
+    }
+
+    handlerDelete(id){
+        axios
+        .delete('http://system.elepha.io/api/v1/question/' + id)
+        .then(res => {
+            alert('Delete Sucessfully');
+            this.refreshDataQuestion();
+        })
+        .catch(e => {
+           
+        });
+    }
+
+    handlerEdit(id,  label , type, meta){
+        this.setState({
+            label,
+            type,
+            meta
+        })
+    }
+
+    handlerMoveup(id){
+
+    }
+
+    handlerMovedown(id){
+
     }
 
 
     render() {
 
         const menu1 = this.state.flow.map(i => (
-            <option key={i.pk} >
+            <option key={i.pk} value={i.pk} >
                 {i.name}
             </option>
         ));
 
+
+
         const { getFieldDecorator } = this.props.form;
-        const data = this.state.questions.map((item, i) => (
+        const question = this.state.questions.filter(i => i.questionflow == this.state.questionFlow)
+        const data = question.map((item, i) => (
             <tr>
                 <td>{i + 1}</td>
                 <td>{item.label}</td>
                 <td>{item.type}</td>
                 <td>{item.meta}</td>
+                <td><a href='#' onClick={() => this.handlerEdit(item.pk , item.label, item.type,item.meta)}>Edit</a></td>
+                <td><a  href='#' onClick={() => this.handlerDelete(item.pk)}>Delete</a></td>
+                <td><a href='#' onClick={() => this.handlerMoveup(item.pk)}>Move up</a></td>
+                <td><a  href='#' onClick={() => this.handlerMovedown(item.pk)}>Move down</a></td>
             </tr>
-
         ));
 
 
         return (
-    
-                <section>
-                    <Header />
-                    <Sidebar />
-                    <div className="main-content w-100">
-                        <div className="page-header col-12" style={{ marginTop: -80 }}>
-                            <h1>Campaign</h1>
-                            <div className="d-flex no-block flex-wrap align-items-start">
-                                <div className="form-group col-10">
-                                    <div className="row">
-                                        <select className="form-control" onChange={(e) => this.handlerMenu(e)}>
-                                            {menu1}
-                                        </select>
-                                    </div>
+
+            <section>
+                <Header />
+                <Sidebar />
+                <div className="main-content w-100">
+                    <div className="page-header col-12" style={{ marginTop: -80 }}>
+                        <h1>Questions</h1>
+                        <div className="d-flex no-block flex-wrap align-items-start">
+                            <div className="form-group col-10">
+                                <div className="row">
+                                    <select className="form-control" onChange={(e) => this.handlerMenu(e)}>
+                                        {menu1}
+                                    </select>
                                 </div>
-                                <button
-                                    className="btn btn-primary"
-                                    data-toggle="modal"
-                                    data-target="#exampleModal"
-                                >
-                                    +
-                                 </button>
                             </div>
-                            <div
-                                class="modal fade"
-                                id="exampleModal"
-                                tabindex="-1"
-                                role="dialog"
-                                aria-labelledby="exampleModalLabel"
-                                aria-hidden="true"
+                            <button
+                                className="btn btn-primary"
+                                data-toggle="modal"
+                                data-target="#exampleModal"
                             >
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <Form layout="inline" onSubmit={(e) => this.handleModal(e)}>
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">
-                                                    Add Campigns
+                                +
+                                 </button>
+                        </div>
+                        <div
+                            class="modal fade"
+                            id="exampleModal"
+                            tabindex="-1"
+                            role="dialog"
+                            aria-labelledby="exampleModalLabel"
+                            aria-hidden="true"
+                        >
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <Form layout="inline" onSubmit={(e) => this.handleModal(e)}>
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">
+                                                Add Campigns
                                   </h5>
-                                                <button
-                                                    type="button"
-                                                    class="close"
-                                                    data-dismiss="modal"
-                                                    aria-label="Close"
-                                                >
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
+                                            <button
+                                                type="button"
+                                                class="close"
+                                                data-dismiss="modal"
+                                                aria-label="Close"
+                                            >
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
 
-                                            <div class="modal-body">
+                                        <div class="modal-body">
 
-                                                <Form.Item>
-                                                    {getFieldDecorator('Name', { initialValue: '' }, {
-                                                        rules: [{ required: true, message: 'Please input name!' }],
-                                                    })(
-                                                        <Input
-                                                            placeholder="name"
-                                                        />,
-                                                    )}
-                                                </Form.Item>
-                                                <Form.Item>
-                                                    {getFieldDecorator('Description', { initialValue: '' }, {
-                                                        rules: [{ required: true, message: 'Please input Description!' }],
-                                                    })(
-                                                        <Input
-                                                            placeholder="Description"
-                                                        />,
-                                                    )}
-                                                </Form.Item>
-                        
+                                            <Form.Item>
+                                                {getFieldDecorator('Name', { initialValue: '' }, {
+                                                    rules: [{ required: true, message: 'Please input name!' }],
+                                                })(
+                                                    <Input
+                                                        placeholder="name"
+                                                    />,
+                                                )}
+                                            </Form.Item>
+                                            <Form.Item>
+                                                {getFieldDecorator('Description', { initialValue: '' }, {
+                                                    rules: [{ required: true, message: 'Please input Description!' }],
+                                                })(
+                                                    <Input
+                                                        placeholder="Description"
+                                                    />,
+                                                )}
+                                            </Form.Item>
 
 
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-secondary"
-                                                    data-dismiss="modal"
-                                                >
-                                                    Close
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button
+                                                type="button"
+                                                class="btn btn-secondary"
+                                                data-dismiss="modal"
+                                            >
+                                                Close
                                                  </button>
-                                                <Form.Item>
-                                                    <button data-dismiss="modal"
-                                                        type="primary" htmlType="submit" >
-                                                        Add
+                                            <Form.Item>
+                                                <button data-dismiss="modal" className="btn btn-secondary"
+                                                    type="button" htmlType="submit" >
+                                                    Add
                                                      </button>
-                                                </Form.Item>
-                                            </div>
-                                        </Form>
-                                    </div>
+                                            </Form.Item>
+                                        </div>
+                                    </Form>
                                 </div>
                             </div>
                         </div>
-                        <div className="table-bs">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">No</th>
-                                        <th scope="col">Label</th>
-                                        <th scope="col">Type</th>
-                                        <th scope="col">Meta</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {data}
-                                </tbody>
-                            </table>
-                        </div>
-                        <form onSubmit={e => this.handlerForm(e)}>
-                            <div className="d-flex no-block flex-wrap mt-5 border-top pt-5">
-
-                                <div className="col-6 col-xl-3 form-group">
-                                    <label>Label</label>
-                                    <input className="form-control" value={this.state.label} onChange={e => this.handlerLabel(e)} on type="text" placeholder="label" />
-                                </div>
-                                <div className="col-6 col-xl-3 form-group">
-                                    <label>Type</label>
-                                    <input className="form-control" value={this.state.type} onChange={e => this.handlerType(e)} type="text" placeholder="type" />
-                                </div>
-                                <div className="col-6 col-xl-3 form-group">
-                                    <label>Meta</label>
-                                    <input className="form-control" value={this.state.meta} onChange={e => this.handlerMeta(e)} type="text" placeholder="meta" />
-                                </div>
-                                <div className="col-12">
-                                    <button className="btn btn-dark" type="submit">
-                                        Submit{" "}
-                                    </button>
-                                </div>
-
-                            </div>
-                        </form>
                     </div>
-                </section>
+                    <div className="table-bs">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Label</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Meta</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {data}
+                            </tbody>
+                        </table>
+                    </div>
+                    <form onSubmit={e => this.handlerForm(e)}>
+                        <div className="d-flex no-block flex-wrap mt-5 border-top pt-5">
+
+                            <div className="col-6 col-xl-3 form-group">
+                                <label>Label</label>
+                                <input className="form-control" value={this.state.label} onChange={e => this.handlerLabel(e)} on type="text" placeholder="label" />
+                            </div>
+                            <div className="col-6 col-xl-3 form-group">
+                                <label>Type</label>
+
+                                <select  className="form-control" onChange={e => this.handlerType(e)}>
+                                    <option key="Start" value="Start" >Start</option>
+                                    <option key="Verify" value="Verify" >Verify</option>
+                                    <option key="Resume" value="Resume" >Resume</option>
+                                    <option key="Jobboard" value="Jobboard" >Jobboard</option>
+                                    <option key="Linkedin" value="Linkedin" >Linkedin</option>
+                                    <option key="Question" value="Question" >Question</option>
+                                    <option key="Option" value="Option" >Option</option>
+                                    <option key="End" value="End" >End</option>
+                                </select>
+                           </div>
+                            <div className="col-6 col-xl-3 form-group">
+                                <label>Meta</label>
+                                <input className="form-control" value={this.state.meta} onChange={e => this.handlerMeta(e)} type="text" placeholder="meta" />
+                            </div>
+                            <div className="col-12">
+                                <button className="btn btn-dark" type="submit">
+                                    Submit{" "}
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </section>
         )
     }
 }

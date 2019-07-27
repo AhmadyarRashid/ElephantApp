@@ -17,13 +17,17 @@ class Register extends Component {
       bot_name: '',
       url: '',
       password: '',
-      retype_password: ''
+      retype_password: '',
+      error :''
     }
   }
 
   handlerForm(e) {
     e.preventDefault();
     if (this.state.password !== this.state.retype_password) {
+      this.setState({
+        error : 'Both Password Fields are mismatch'
+      })
       alert('Both Password Field are not match');
     } else {
       Axios.post('http://system.elepha.io/api/v1/elephauser/', {
@@ -40,9 +44,12 @@ class Register extends Component {
       }).then(res => {
         alert('Registration Complete Sucessfully');
         this.props.history.push('/');
-        console.log(res);
+      
       }).catch(e => {
-        alert('this email, url or phone is already exist');
+        this.setState({
+          error : 'Subdomain, already exists. Please select another'
+        })
+       // alert('this email, url or phone is already exist');
       })
     }
   }
@@ -65,6 +72,10 @@ class Register extends Component {
             </div>
             <form class="frm" onSubmit={(e) => this.handlerForm(e)}>
               <br />
+
+              {this.state.error == '' ? '' : <div class="alert alert-danger" role="alert"> {this.state.error} </div>}
+
+
               <div class="form-group">
                 <input type="text" required value={this.state.name} onChange={e => this.setState({ name: e.target.value })} class="form-control" ref="name" placeholder="Full Name" />
               </div>
@@ -81,7 +92,7 @@ class Register extends Component {
                 <input type="text" required value={this.state.bot_name} onChange={e => this.setState({ bot_name: e.target.value })} class="form-control" ref="bot_name" placeholder="Bot Name" />
               </div>
               <div class="form-group">
-                <input type="url" required value={this.state.url} onChange={e => this.setState({ url: e.target.value })} class="form-control" ref="sub_domian" placeholder="Sub Domain" />
+                <input type="text" required value={this.state.url} onChange={e => this.setState({ url: e.target.value })} class="form-control" ref="sub_domian" placeholder="Your Subdomain" />
               </div>
               <div class="form-group">
                 <input type="password" required pattern=".{6,}" title="At least 8 or more characters" value={this.state.password} onChange={e => this.setState({ password: e.target.value })} class="form-control" ref="password" placeholder="Password" />

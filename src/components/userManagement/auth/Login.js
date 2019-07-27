@@ -13,7 +13,9 @@ class Login extends Component {
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      error: ''
+
     }
   }
 
@@ -31,23 +33,28 @@ class Login extends Component {
 
           res2.data.forEach(user => {
             if (user.email == this.state.email) {
-              console.log('token', res.data.token);
-              console.log('id', user.pk)
+    
               setAuthToken(res.data.token);
               localStorage.setItem('token', res.data.token);
               localStorage.setItem('user_id', user.pk);
+              this.setState({
+                email: '',
+                password: '',
+                error : ''
+              })
               this.props.history.push('/');
             }
           })
         })
         .catch(e => {
-          console.log(e);
+         // console.log(e);
         });
     }).catch(err => {
-      alert('Email or Password are wrong');
+    //  alert('Email or Password are wrong');
       this.setState({
         email: '',
-        password: ''
+        password: '',
+        error : 'Invalid credentials'
       })
     })
   }
@@ -69,22 +76,24 @@ class Login extends Component {
             </div>
             <form class="frm" onSubmit={(e) => this.handlerLogin(e)}>
               <br />
+
+              {this.state.error == '' ? '' : <div class="alert alert-danger" role="alert"> {this.state.error} </div>}
+
               <div class="form-group">
                 <input type="email" value={this.state.email} onChange={e => this.setState({ email: e.target.value })} required class="form-control" ref="email" placeholder="Email" />
               </div>
               <div class="form-group">
-                <input type="password"  value={this.state.password} onChange={e => this.setState({ password: e.target.value })} required  class="form-control" ref="password" placeholder="Password" />
+                <input type="password" value={this.state.password} onChange={e => this.setState({ password: e.target.value })} required class="form-control" ref="password" placeholder="Password" />
               </div>
               <button type="submit" class="btn btn-primary btn-block pnk_bt">Sign in!</button>
               <br />
             </form>
-            <p> .. Or Register </p>
-            <Link to="/register"  className="btn btn-primary btn-block pnk_bt">
+            <Link to="/register" className="btn btn-primary btn-block pnk_bt">
               Register
           </Link>
           </div>
         </div>
-   </div>
+      </div>
     );
   }
 }

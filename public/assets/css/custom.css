@@ -1,0 +1,38 @@
+.page-header .btn-primary{
+  background-color: transparent;
+  border: 0px;
+  font-size: 40px;
+  color: #000;
+  line-height: 28px;
+  margin-left: 20px;
+}
+.page-header {
+  background-color: #efefef;
+  padding: 30px 20px 10px
+}
+.main-content
+{
+  padding-left: 230px;
+  padding-top: 80px;
+}
+.mini-sidebar .main-content {
+  padding-left: 80px
+}
+.key-image img{
+  width: 100px !important;
+  margin-top: 0px;
+  margin-left: 0px;
+}
+.frm{
+  margin-top: 0px !important;
+}
+@media (max-width: 1024px) {
+  .box {
+    width:95% !important;
+    margin:0px auto;
+  }
+}
+.card-direction{
+  flex-direction: row;
+}
+.

@@ -42,60 +42,63 @@ class Register extends Component {
         this.props.history.push('/');
         console.log(res);
       }).catch(e => {
-         alert('this email, url or phone is already exist');
+        alert('this email, url or phone is already exist');
       })
     }
   }
 
   render() {
     return (
-      <div className="app flex-row align-items-center">
-        <Container>
-          <Row className="justify-content-center">
-            <Col md="9" lg="7" xl="6">
-              <Card className="mx-4">
-                <CardBody className="p-4">
-                  <Form onSubmit={(e) => this.handlerForm(e)}>
-                  <center>
-                  <img src={require('../../../images/logo.png')} width={200} height={75} />
-                  </center>
-                    <p className="text-muted">Create your account</p>
-                    <InputGroup className="mb-3">
-                      <Input type="text" required value={this.state.name} onChange={e => this.setState({ name: e.target.value })} placeholder="Username" autoComplete="username" />
-                    </InputGroup>
-                    <InputGroup className="mb-3">
-                      <Input type="email" required value={this.state.email} onChange={e => this.setState({ email: e.target.value })} placeholder="Email" autoComplete="email" />
-                    </InputGroup>
-                    <InputGroup className="mb-3">
-                      <Input type="tel" pattern="[0-9]{6,}" title="Enter number no Without white-space" required value={this.state.phone} onChange={e => this.setState({ phone: e.target.value })} placeholder="Phone No" autoComplete="phone" />
-                    </InputGroup>
-                    <InputGroup className="mb-3">
-                      <Input type="text" required value={this.state.company} onChange={e => this.setState({ company: e.target.value })} placeholder="Company" autoComplete="Company" />
-                    </InputGroup>
-                    <InputGroup className="mb-3">
-                      <Input type="text" required value={this.state.bot_display} onChange={e => this.setState({ bot_display: e.target.value })} placeholder="Bot Display" autoComplete="Bot display" />
-                    </InputGroup>
-                    <InputGroup className="mb-3">
-                      <Input type="text" required value={this.state.bot_name} onChange={e => this.setState({ bot_name: e.target.value })} placeholder="Bot Name" autoComplete="Bot Name" />
-                    </InputGroup>
-                    <InputGroup className="mb-3">
-                      <Input type="url" required value={this.state.url} onChange={e => this.setState({ url: e.target.value })} placeholder="Url" autoComplete="url" />
-                    </InputGroup>
-                    <InputGroup className="mb-3">
-                      <Input type="password" required pattern=".{6,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" value={this.state.password} onChange={e => this.setState({ password: e.target.value })} placeholder="Password" autoComplete="new-password" />
-                    </InputGroup>
-                    <InputGroup className="mb-4">
-                      <Input type="password" required value={this.state.retype_password} pattern=".{6,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" onChange={e => this.setState({ retype_password: e.target.value })} placeholder="Repeat password" autoComplete="new-password" />
-                    </InputGroup>
-                    <Button color="success" type="submit" block>Create Account</Button>
-                  </Form>
-                </CardBody>
+      <div>
+        <div class="d-flex justify-content-center mt">
 
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+          <div class="box">
+            <img src="./assets/images/logo1.png" style={{ width: "100%", marginBottom: "8%" }} />
+            <div className="d-flex flex-wrap no-block col-10 ml-auto mr-auto justify-content-center align-items-center">
+              <div className="login-desc">
+                <h2> Register to our site </h2>
+                <p> Enter Username and Password </p>
+              </div>
+              <div className="key-image">
+                <img src="./assets/images/pencil.png" class="img" style={{ width: "15%" }} />
+              </div>
+            </div>
+            <form class="frm" onSubmit={(e) => this.handlerForm(e)}>
+              <br />
+              <div class="form-group">
+                <input type="text" required value={this.state.name} onChange={e => this.setState({ name: e.target.value })} class="form-control" ref="name" placeholder="Full Name" />
+              </div>
+              <div class="form-group">
+                <input type="email" required value={this.state.email} onChange={e => this.setState({ email: e.target.value })} class="form-control" ref="email" placeholder="Email" />
+              </div>
+              <div class="form-group">
+                <input type="tel"  pattern="[0-9]{6,}" title="Enter number no Without white-space" required value={this.state.phone} onChange={e => this.setState({ phone: e.target.value })} class="form-control" ref="phone" placeholder="Phone Number" />
+              </div>
+              <div class="form-group">
+                <input type="text" required value={this.state.company} onChange={e => this.setState({ company: e.target.value })} class="form-control" ref="company" placeholder="Company" />
+              </div>
+              <div class="form-group">
+                <input type="text" required value={this.state.bot_name} onChange={e => this.setState({ bot_name: e.target.value })} class="form-control" ref="bot_name" placeholder="Bot Name" />
+              </div>
+              <div class="form-group">
+                <input type="url" required value={this.state.url} onChange={e => this.setState({ url: e.target.value })} class="form-control" ref="sub_domian" placeholder="Sub Domain" />
+              </div>
+              <div class="form-group">
+                <input type="password" required pattern=".{6,}" title="At least 8 or more characters" value={this.state.password} onChange={e => this.setState({ password: e.target.value })} class="form-control" ref="password" placeholder="Password" />
+              </div>
+              <div class="form-group">
+                <input type="password" required value={this.state.retype_password} pattern=".{6,}" title="At least 8 or more characters" onChange={e => this.setState({ retype_password: e.target.value })} class="form-control" placeholder="Confirm Password" />
+              </div>
+              <div class="form-group">
+                <input type="text" required value={this.state.bot_display} onChange={e => this.setState({ bot_display: e.target.value })} class="form-control" ref="bot_display" placeholder="Bot Description" />
+              </div>
+              <button type="submit" class="btn btn-primary btn-block pnk_bt">Sign in!</button>
+              <br />
+            </form>
+          </div>
+        </div>
+
+    </div>
     );
   }
 }

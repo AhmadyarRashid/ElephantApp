@@ -16,41 +16,33 @@ class Sidebar extends React.Component {
   };
   render() {
     return (
-      <Sider
-        collapsible
-        collapsed={this.state.collapsed}
-        onCollapse={this.onCollapse}
-        style={{ background: "#00000" }}
-      >
-        <Menu theme="dark" mode="inline">
-
-          <Menu.Item key="4">
-            <Link to='/'>
-              <Icon type="home" />
-              <span>Home</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="5">
-            <Link to='/candidate'>
-              <Icon type="user" />
-              <span>Candidate</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="6">
-            <Link to='/answer'>
-              <Icon type="file" />
-              <span>Answer</span>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="7">
-            <Link to="/questions">
-              <Icon type="file" />
-              <span>Questions</span>
-            </Link>
-          </Menu.Item>
-
-        </Menu>
-      </Sider>
+      <aside className="left-sidebar">
+        <div className="scroll-sidebar">
+          <nav className="sidebar-nav">
+            <ul id="sidebarnav">
+              <li>
+                <div className="px-3">
+                </div>
+                <Link to="/home" >Dashboard</Link>
+              </li>
+              <li>
+                <Link to="/questions" >Questions</Link>
+              </li>
+              <li>
+                <Link to="/answer" >Answers</Link>
+              </li>
+              <li>
+                <Link to="/candidate" >Candidates</Link>
+              </li>
+              <li>
+                <a className="has-arrow waves-effect waves-dark">
+                  <span class="hide-menu"> </span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </aside>
     );
   }
 }

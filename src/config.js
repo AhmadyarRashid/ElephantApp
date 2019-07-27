@@ -1,1 +1,1 @@
-export default { serverUrl: "http://erpserver.tecsob.com" };
+export default { serverUrl: "http://localhost:3001" };

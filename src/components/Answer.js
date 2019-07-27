@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import DefaultLayout from "./Layout/DefaultLayout";
 import axios from 'axios';
 import { Form, Icon, Input, Button, Menu, Dropdown, Modal, Table } from 'antd';
+import Header from './Layout/Navbar';
+import Sidebar from './Layout/Sidebar';
 
 const { Column, ColumnGroup } = Table;
 
@@ -21,15 +23,15 @@ class Answer extends Component {
     componentDidMount() {
 
         axios.get('http://system.elepha.io/api/v1/campaigns')
-        .then(res => {
-            console.log(res.data);
-            let res2 = res.data;
-            this.setState({
-                campigns: res2
+            .then(res => {
+                console.log(res.data);
+                let res2 = res.data;
+                this.setState({
+                    campigns: res2
+                })
+            }).catch(e => {
+                console.log(e);
             })
-        }).catch(e => {
-            console.log(e);
-        })
 
         axios
             .get('http://system.elepha.io/api/v1/answer/')
@@ -84,29 +86,10 @@ class Answer extends Component {
     render() {
 
         const menu1 = this.state.campigns.map(i => (
-            <Menu.Item key={i.pk} onClick={e => this.handlerMenu(e)}>
+            <option key={i.pk}>
                 {i.name}
-            </Menu.Item>
+            </option>
         ));
-        // let arr3 = [];
-
-        // this.state.answers.forEach((itm, i) => {
-        //     arr3.push(Object.assign({}, itm, this.state.resource[i]));
-        // });
-
-        // arr3.forEach((itm, i) => {
-        //     arr3.push(Object.assign({}, itm, this.state.resume[i]));
-        // });
-
-        // arr3.forEach((itm, i) => {
-        //     arr3.push(Object.assign({}, itm, this.state.resumedata[i]));
-        // });
-
-        // console.log('Joins' , arr3)
-
-
-
-
 
 
         const bomDetails = [{
@@ -128,131 +111,80 @@ class Answer extends Component {
 
 
         return (
-            <DefaultLayout title="Answers">
-
-                <Dropdown overlay={<Menu>{menu1}</Menu>} >
-                    <a className="ant-dropdown-link" href="#">
-                        Select Campigns <Icon type="down" />
-                    </a>
-                </Dropdown>
-                <Table dataSource={bomDetails} bordered className="table-responsive table-responsive-md">
-                    <Column
-                        title="Full Name"
-                        dataIndex="full_name"
-                        key="full_name"
-                    />
-                    <Column
-                        title="Phone 1"
-                        dataIndex="phoneone"
-                        key="phoneone"
-                    />
-                    <Column
-                        title="Phone 2"
-                        dataIndex="phonetwo"
-                        key="phonetwo"
-                    />
-                    <Column
-                        title="Email 1"
-                        dataIndex="emailone"
-                        key="emailone"
-                    />
-                    <Column
-                        title="Email 2"
-                        dataIndex="emailtwo"
-                        key="emailtwo"
-                    />
-                    <Column
-                        title="City"
-                        dataIndex="city"
-                        key="city"
-                    />
-                    <Column
-                        title="Country"
-                        dataIndex="country"
-                        key="country"
-                    />
-                    <Column
-                        title="Education"
-                        dataIndex="education"
-                        key="education"
-                    />
-                    <Column
-                        title="Work"
-                        dataIndex="work"
-                        key="work"
-                    />
-                    <Column
-                        title="Title"
-                        dataIndex="title"
-                        key="title"
-                    />
-
-                    <Column
-                        title="Resume"
-                        dataIndex="resume"
-                        key="resume"
-                    />
-                    <Column
-                        title="Resume Type"
-                        dataIndex="resume_type"
-                        key="resume_type"
-                    />
-
-                    <Column
-                        title="Answer 1"
-                        dataIndex="answer_one"
-                        key="answer_one"
-                    />
-                    <Column
-                        title="Answer 2"
-                        dataIndex="answer_two"
-                        key="answer_two"
-                    />
-                    <Column
-                        title="Answer 3"
-                        dataIndex="answer_three"
-                        key="answer_three"
-                    />
-                    <Column
-                        title="Answer 4"
-                        dataIndex="answer_four"
-                        key="answer_four"
-                    />
-                    <Column
-                        title="Answer 5"
-                        dataIndex="answer_five"
-                        key="answer_five"
-                    />
-                    <Column
-                        title="Answer 6"
-                        dataIndex="answer_six"
-                        key="answer_six"
-                    />
-                    <Column
-                        title="Answer 7"
-                        dataIndex="answer_seven"
-                        key="answer_seven"
-                    />
-                    <Column
-                        title="Answer 8"
-                        dataIndex="answer_eight"
-                        key="answer_eight"
-                    />
-                    <Column
-                        title="Answer 9"
-                        dataIndex="answer_nine"
-                        key="answer_nine"
-                    />
-                    <Column
-                        title="Answer 10"
-                        dataIndex="answer_ten"
-                        key="answer_ten"
-                    />
-
-
-
-                </Table>
-            </DefaultLayout>
+                <section>
+                    <Header />
+                    <Sidebar />
+                    <div className="main-content w-100">
+                        <div className="page-header col-12" style={{marginTop : -80}}>
+                            <h1>Campaign</h1>
+                            <div className="d-flex no-block flex-wrap align-items-start">
+                                <div className="form-group col-4">
+                                    <div className="row">
+                                        <select className="form-control" onChange={e => this.handlerMenu(e)}>
+                                           {menu1}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="table-bs">
+                            <table class="table" bordered className="table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Full Name</th>
+                                        <th scope="col">Phone 1</th>
+                                        <th scope="col">Phone 2</th>
+                                        <th scope="col">Email 1</th>
+                                        <th scope="col">Email 2</th>
+                                        <th scope="col">City</th>
+                                        <th scope="col">Country</th>
+                                        <th scope="col">Education</th>
+                                        <th scope="col">Work</th>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Resume</th>
+                                        <th scope="col">Resume Type</th>
+                                        <th scope="col">Answer 1</th>
+                                        <th scope="col">Answer 2</th>
+                                        <th scope="col">Answer 3</th>
+                                        <th scope="col">Answer 4</th>
+                                        <th scope="col">Answer 5</th>
+                                        <th scope="col">Answer 6</th>
+                                        <th scope="col">Answer 7</th>
+                                        <th scope="col">Answer 8</th>
+                                        <th scope="col">Answer 9</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                        <td>@mdo</td>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                        <td>@fat</td>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                        <td>@fat</td>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                        <td>@fat</td>
+                                        <td>@fat</td>
+                                        <td>@fat</td>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                    </tr>
+                            
+                                </tbody>
+                            </table>
+                        </div>
+                    
+                    </div>
+                </section>
         )
     }
 }

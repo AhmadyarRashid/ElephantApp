@@ -54,48 +54,37 @@ class Login extends Component {
 
   render() {
     return (
-      <div className="app flex-row align-items-center">
-        <Container>
-          <Row className="justify-content-center">
-            <Col md="6">
-              <CardGroup>
-                <Card className="p-4">
-                  <CardBody>
-                    <Form onSubmit={(e) => this.handlerLogin(e)}>
-                  
-                      <center>
-                      <img src={require('../../../images/logo.png')} width={200} height={75} />
-                      </center>
-                      <p className="text-muted">Sign In to your account</p>
-                      <InputGroup className="mb-3">
-                        <Input type="email" value={this.state.email} onChange={e => this.setState({ email: e.target.value })} required placeholder="Email" autoComplete="email" />
-                      </InputGroup>
-                      <InputGroup className="mb-4">
-                        <Input type="password" value={this.state.password} onChange={e => this.setState({ password: e.target.value })} required placeholder="Password" autoComplete="current-password" />
-                      </InputGroup>
-                      <Row>
-                        <Col xs="6">
-                          <Button color="primary" type="submit" className="px-4">Login</Button>
-                        </Col>
-                        <Col xs="6" className="text-right">
-                          <Button color="link" className="px-0">Forgot password?</Button>
-                        </Col>
-                      </Row>
-
-                      <Row>
-                        <Col xs="12" className="text-center">
-                          <Link color="link" to="/register" className="px-0">Create new account?</Link>
-                        </Col>
-                      </Row>
-                    </Form>
-                  </CardBody>
-                </Card>
-
-              </CardGroup>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+      <div>
+        <div class="d-flex justify-content-center mt">
+          <div class="box">
+            <img src="./assets/images/logo1.png" style={{ width: "100%", marginBottom: "8%" }} />
+            <div className="d-flex flex-wrap no-block col-10 ml-auto mr-auto justify-content-center align-items-center">
+              <div className="login-desc">
+                <h2> Login to our site </h2>
+                <p> Enter Username and Password </p>
+              </div>
+              <div className="key-image">
+                <img src="./assets/images/key.png" class="img" style={{ width: "15%" }} />
+              </div>
+            </div>
+            <form class="frm" onSubmit={(e) => this.handlerLogin(e)}>
+              <br />
+              <div class="form-group">
+                <input type="email" value={this.state.email} onChange={e => this.setState({ email: e.target.value })} required class="form-control" ref="email" placeholder="Email" />
+              </div>
+              <div class="form-group">
+                <input type="password"  value={this.state.password} onChange={e => this.setState({ password: e.target.value })} required  class="form-control" ref="password" placeholder="Password" />
+              </div>
+              <button type="submit" class="btn btn-primary btn-block pnk_bt">Sign in!</button>
+              <br />
+            </form>
+            <p> .. Or Register </p>
+            <Link to="/register"  className="btn btn-primary btn-block pnk_bt">
+              Register
+          </Link>
+          </div>
+        </div>
+   </div>
     );
   }
 }

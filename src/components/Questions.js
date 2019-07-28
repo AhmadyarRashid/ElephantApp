@@ -20,7 +20,9 @@ class Questions extends Component {
             userId: 1,
             label: '',
             type: 'Start',
-            meta: ''
+            meta: '',
+            formStatus: 'Save',
+            editId: ''
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,6 +30,7 @@ class Questions extends Component {
 
 
     refreshDataQuestion() {
+
         axios
             .get('http://system.elepha.io/api/v1/question/')
             .then(res => {
@@ -38,31 +41,43 @@ class Questions extends Component {
                 }
             })
             .catch(e => {
-              
+
             });
 
-        axios.get('http://system.elepha.io/api/v1/questionflow/')
-            .then(res => {
-                if (res) {
-                    this.setState({
-                        flow: res.data,
-
-                    })
-                    if (res.data.length > 0) {
-                        this.setState({
-                            questionFlow: res.data[0].pk
-                        })
-                    }
-
-                }
-            }).catch(e => {
-              
-            })
+       
     }
 
     componentDidMount() {
         this.props.form.validateFields();
         this.refreshDataQuestion();
+
+        try {
+            let userId = localStorage.getItem('user_id');
+            this.setState({
+                userId
+            })
+        } catch (e) {
+            alert('Please Login again to work properly')
+        }
+
+
+        axios.get('http://system.elepha.io/api/v1/questionflow/')
+        .then(res => {
+            if (res) {
+                this.setState({
+                    flow: res.data,
+
+                })
+                if (res.data.length > 0) {
+                    this.setState({
+                        questionFlow: res.data[0].pk
+                    })
+                }
+
+            }
+        }).catch(e => {
+
+        })
 
     }
 
@@ -110,7 +125,7 @@ class Questions extends Component {
                         alert('Add Sucessfully');
                     })
                     .catch(e => {
-                    
+
                     });
             }
         });
@@ -124,7 +139,7 @@ class Questions extends Component {
             .get('http://system.elepha.io/api/v1/question/')
             .then(res => {
                 if (res) {
-                   
+
                     const filterData = res.data.filter(i => i.questionflow == this.state.questionFlow);
                     this.setState({
                         questions: filterData
@@ -132,7 +147,7 @@ class Questions extends Component {
                 }
             })
             .catch(e => {
-               
+
             });
     }
 
@@ -179,68 +194,101 @@ class Questions extends Component {
 
     handlerForm(e) {
         e.preventDefault();
-        if (this.state.label == '' || this.state.type == '' || this.state.meta == '') {
-            alert('Some Field are empty');
-        } else {
-            let userId;
-            const { label, type, meta } = this.state;
-            try {
-                userId = localStorage.getItem('user_id');
-                this.setState({
-                    userId
-                })
-            } catch (e) {
-                userId = 1
-            }
-            axios
-                .post('http://system.elepha.io/api/v1/question/', {
-                    "label": label,
-                    "type": type,
-                    "meta": meta,
-                    "questionflow": this.state.questionFlow,
-                    "elephauser": userId
-                })
-                .then(res => {
-                    this.setState({
-                        label: '',
-                        type: '',
-                        meta: ''
+        if (this.state.formStatus == 'Save') {
+        
+                const { label, type, meta } = this.state;
+               
+                axios
+                    .post('http://system.elepha.io/api/v1/question/', {
+                        "label": label,
+                        "type": type,
+                        "meta": meta,
+                        "questionflow": this.state.questionFlow,
+                        "elephauser": this.state.userId
                     })
-                    alert('Add Sucessfully');
-                    this.refreshDataQuestion();
-                })
-                .catch(e => {
-                   
-                });
+                    .then(res => {
+                        this.setState({
+                            label: '',
+                            type: '',
+                            meta: ''
+                        })
+                        alert('Add Sucessfully');
+                        this.refreshDataQuestion();
+                    })
+                    .catch(e => {
+
+                    });
         }
+
+        if (this.state.formStatus == 'Update') {
+            if (this.state.label == '' || this.state.meta == '') {
+                alert('Some Field is Empty')
+            } else {
+                axios 
+                    .patch(`http://system.elepha.io/api/v1/question/${this.state.editId}/`,{
+                        label: this.state.label,
+                        type: this.state.type,
+                        meta: this.state.meta
+                    }).then(res => {
+                        alert('Update Sucessfully')
+                        this.setState({
+                            label :'',
+                            type : '',
+                            meta : '',
+                            editId :'',
+                            formStatus : 'Save'
+                        })
+                    }).catch(e => {
+                        //console.log('=======' , e);
+                        alert('Some Network Issue')
+                    })
+            }
+        }
+
+
+
     }
 
-    handlerDelete(id){
+    handlerDelete(id) {
         axios
-        .delete('http://system.elepha.io/api/v1/question/' + id)
-        .then(res => {
-            alert('Delete Sucessfully');
-            this.refreshDataQuestion();
-        })
-        .catch(e => {
-           
-        });
+            .delete('http://system.elepha.io/api/v1/question/' + id)
+            .then(res => {
+                alert('Delete Sucessfully');
+                this.refreshDataQuestion();
+            })
+            .catch(e => {
+
+            });
     }
 
-    handlerEdit(id,  label , type, meta){
+    handlerEdit(id, label, type, meta) {
         this.setState({
+            editId: id,
             label,
             type,
-            meta
+            meta,
+            formStatus: 'Update'
         })
-    }
 
-    handlerMoveup(id){
 
     }
 
-    handlerMovedown(id){
+    handlerMoveup(id) {
 
+    }
+
+    handlerMovedown(id) {
+
+    }
+
+    handlerReset(e){
+        this.setState({
+            label : '',
+            meta : '',
+            editId : '',
+            type : 'Start',
+            formStatus : 'Save'
+        })
     }
 
 
@@ -262,10 +310,10 @@ class Questions extends Component {
                 <td>{item.label}</td>
                 <td>{item.type}</td>
                 <td>{item.meta}</td>
-                <td><a href='#' onClick={() => this.handlerEdit(item.pk , item.label, item.type,item.meta)}>Edit</a></td>
-                <td><a  href='#' onClick={() => this.handlerDelete(item.pk)}>Delete</a></td>
+                <td><a href='#' onClick={() => this.handlerEdit(item.pk, item.label, item.type, item.meta)}>Edit</a></td>
+                <td><a href='#' onClick={() => this.handlerDelete(item.pk)}>Delete</a></td>
                 <td><a href='#' onClick={() => this.handlerMoveup(item.pk)}>Move up</a></td>
-                <td><a  href='#' onClick={() => this.handlerMovedown(item.pk)}>Move down</a></td>
+                <td><a href='#' onClick={() => this.handlerMovedown(item.pk)}>Move down</a></td>
             </tr>
         ));
 
@@ -389,7 +437,7 @@ class Questions extends Component {
                             <div className="col-6 col-xl-3 form-group">
                                 <label>Type</label>
 
-                                <select  className="form-control" onChange={e => this.handlerType(e)}>
+                                <select className="form-control" value={this.state.type} onChange={e => this.handlerType(e)}>
                                     <option key="Start" value="Start" >Start</option>
                                     <option key="Verify" value="Verify" >Verify</option>
                                     <option key="Resume" value="Resume" >Resume</option>
@@ -399,14 +447,18 @@ class Questions extends Component {
                                     <option key="Option" value="Option" >Option</option>
                                     <option key="End" value="End" >End</option>
                                 </select>
-                           </div>
+                            </div>
                             <div className="col-6 col-xl-3 form-group">
                                 <label>Meta</label>
                                 <input className="form-control" value={this.state.meta} onChange={e => this.handlerMeta(e)} type="text" placeholder="meta" />
                             </div>
                             <div className="col-12">
                                 <button className="btn btn-dark" type="submit">
-                                    Submit{" "}
+                                    {this.state.formStatus}
+                                </button>
+
+                                <button className="btn btn-danger" onClick={e => this.handlerReset(e)}>
+                                   Reset
                                 </button>
                             </div>
 

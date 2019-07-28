@@ -94,7 +94,7 @@ class Navbar extends React.Component {
                         </ul>
                         <ul className="navbar-nav my-lg-0">
                             <li className="nav-item dropdown u-pro" onClick={() => this.onLogoutClick()}>
-                                    <i class="fas fa-power-off fa-lg"></i>
+                                    <i style={{paddingRight:15}} class="fas fa-power-off fa-lg"></i>
                             </li>
                         </ul>
                     </div>

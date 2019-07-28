@@ -45,7 +45,7 @@ class Configurations extends Component {
             .then(res => {
                 let res2 = res.data.filter(i => i.elephauser == this.state.userId);
                 this.setState({
-                    campigns: res.data
+                    campigns: res2
                 })
                 if (res.data.length > 0) {
                     this.setState({

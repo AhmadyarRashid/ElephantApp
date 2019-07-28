@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import DefaultLayout from "./Layout/DefaultLayout";
 import axios from 'axios';
-import { Form, Icon, Input, Button, Menu, Dropdown, Modal, Table } from 'antd';
 import Header from './Layout/Navbar';
 import Sidebar from './Layout/Sidebar';
-
-const { Column, ColumnGroup } = Table;
 
 class Answer extends Component {
     constructor(props) {
@@ -17,7 +13,8 @@ class Answer extends Component {
             resume: [],
             resumedata: [],
             campigns: [],
-            user_id: 1
+            user_id: 1,
+            mergeDataList: []
         };
     }
 
@@ -40,7 +37,7 @@ class Answer extends Component {
                     campigns: res2
                 })
             }).catch(e => {
-              //  console.log(e);
+                //  console.log(e);
             })
 
         axios
@@ -53,7 +50,7 @@ class Answer extends Component {
                 }
             })
             .catch(e => {
-              //  console.log(e)
+                //  console.log(e)
             });
 
         axios.get('http://system.elepha.io/api/v1/resumesource/')
@@ -64,7 +61,7 @@ class Answer extends Component {
                     })
                 }
             }).catch(e => {
-              //  console.log(e)
+                //  console.log(e)
             })
 
         axios.get('http://system.elepha.io/api/v1/resume/')
@@ -76,7 +73,7 @@ class Answer extends Component {
                 }
 
             }).catch(e => {
-             //   console.log(e)
+                //   console.log(e)
             })
 
         axios.get('http://system.elepha.io/api/v1/resumedata/')
@@ -88,41 +85,110 @@ class Answer extends Component {
                 }
 
             }).catch(e => {
-               // console.log(e)
+                // console.log(e)
             })
+
+
+        // after getting data from api then merge and set into mergeDataList[]
+
+        let data = [
+            {
+                name: 'meo',
+                phone_one: '123',
+                phone_two: '123',
+                email_one: 'abc',
+                email_two: 'abc2',
+                city: 'dehli',
+                country: 'india',
+                education: 'bachelor',
+                work: 'asd',
+                title: 'asd',
+                resume: 'qwe',
+                resume_type: 'asd',
+                answer_one: 'asd',
+                answer_two: 'asd',
+                answer_three: 'asd',
+                answer_four: 'asd',
+                answer_five: 'asd',
+                answer_six: 'asd',
+                answer_seven: 'asd',
+                answer_eight: 'asd',
+                answer_nine: 'asd'
+            },
+            {
+                name: 'meo',
+                phone_one: '123',
+                phone_two: '123',
+                email_one: 'abc',
+                email_two: 'abc2',
+                city: 'delhi',
+                country: 'india',
+                education: 'bachelor',
+                work: 'asd',
+                title: 'asd',
+                resume: 'qwe',
+                resume_type: 'asd',
+                answer_one: 'asd',
+                answer_two: 'asd',
+                answer_three: 'asd',
+                answer_four: 'asd',
+                answer_five: 'asd',
+                answer_six: 'asd',
+                answer_seven: 'asd',
+                answer_eight: 'asd',
+                answer_nine: 'asd'
+            }
+        ];
+
+        this.setState({
+            mergeDataList : data
+        })
     }
 
 
     handlerDownload() {
-        window.open('http://localhost:3000/sample.csv', '_self')
+        // window.open('http://localhost:3000/sample.csv', '_self')
+    }
+
+    handlerMenu(e){
+      //  console.log(e.target.value);
     }
 
 
     render() {
 
         const menu1 = this.state.campigns.map(i => (
-            <option key={i.pk}>
+            <option key={i.pk} value={i.pk}>
                 {i.name}
             </option>
         ));
 
+        const tableBody = this.state.mergeDataList.map(i => (
+            <tr>
+                <td scope="col">{i.name}</td>
+                <td scope="col">{i.phone_one}</td>
+                <td scope="col">{i.phone_two}</td>
+                <td scope="col">{i.email_one}</td>
+                <td scope="col">{i.email_two}</td>
+                <td scope="col">{i.city}</td>
+                <td scope="col">{i.country}</td>
+                <td scope="col">{i.education}</td>
+                <td scope="col">{i.work}</td>
+                <td scope="col">{i.title}</td>
+                <td scope="col">{i.resume}</td>
+                <td scope="col">{i.resume_type}</td>
+                <td scope="col">{i.answer_one}</td>
+                <td scope="col">{i.answer_two}</td>
+                <td scope="col">{i.answer_three}</td>
+                <td scope="col">{i.answer_four}</td>
+                <td scope="col">{i.answer_five}</td>
+                <td scope="col">{i.answer_six}</td>
+                <td scope="col">{i.answer_seven}</td>
+                <td scope="col">{i.answer_eight}</td>
+                <td scope="col">{i.answer_nine}</td>
+            </tr>
+        ));
 
-        const bomDetails = [{
-            key: 1,
-            s_no: 2,
-            item_number: 3,
-        },
-        {
-            key: 1,
-            s_no: 2,
-            item_number: 3,
-        },
-        {
-            key: 1,
-            s_no: 2,
-            item_number: 3,
-        }
-        ]
 
 
         return (
@@ -135,7 +201,7 @@ class Answer extends Component {
                         <div className="d-flex no-block flex-wrap align-items-start">
                             <div className="form-group col-4">
                                 <div className="row">
-                                Campaign :
+                                    Campaign :
                                     <select className="form-control" onChange={e => this.handlerMenu(e)}>
                                         {menu1}
                                     </select>
@@ -156,7 +222,7 @@ class Answer extends Component {
                         </div>
                     </div>
                     <div className="table-bs">
-                        <table class="table" bordered className="table-responsive">
+                        <table bordered className="table table-responsive ">
                             <thead>
                                 <tr>
                                     <th scope="col">Full Name</th>
@@ -183,29 +249,7 @@ class Answer extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>@mdo</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>@fat</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>@fat</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>@fat</td>
-                                    <td>@fat</td>
-                                    <td>@fat</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                </tr>
+                                {tableBody}
 
                             </tbody>
                         </table>

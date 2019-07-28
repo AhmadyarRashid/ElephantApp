@@ -26,6 +26,9 @@ class Sidebar extends React.Component {
                 <Link to="/home" >Dashboard</Link>
               </li>
               <li>
+                <Link to="/configuration" >Configurations</Link>
+              </li>
+              <li>
                 <Link to="/questions" >Questions</Link>
               </li>
               <li>

@@ -9406,6 +9406,11 @@ react-bootstrap-table-next@^3.1.7:
     react-transition-group "2.5.3"
     underscore "1.9.1"
 
+react-bootstrap-table2-paginator@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/react-bootstrap-table2-paginator/-/react-bootstrap-table2-paginator-2.0.7.tgz#9ced80c4a8bc04b4fecfd3cb446dceb802a85d38"
+  integrity sha512-6N5p0jOfbYVvs0zmVKTa9gJ1aYZyn7IeEeSmzeRwCFHXrg5qhMo+wHyi2eZwDHB+vlDcDpWNnxXvhp2h/Rgzcw==
+
 react-bootstrap-table2-toolkit@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/react-bootstrap-table2-toolkit/-/react-bootstrap-table2-toolkit-2.0.1.tgz#7098d4ee21fc524eb870bfe22426c199c8f63bec"

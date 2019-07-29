@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Header from './Layout/Navbar';
 import Sidebar from './Layout/Sidebar';
+import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory from 'react-bootstrap-table2-paginator';
 
 class Answer extends Component {
     constructor(props) {
@@ -14,7 +16,79 @@ class Answer extends Component {
             resumedata: [],
             campigns: [],
             user_id: 1,
-            mergeDataList: []
+            mergeDataList: [],
+            columns: [
+                {
+                    dataField: 'name',
+                    text: 'Full Name'
+                }, {
+                    dataField: 'phone_one',
+                    text: 'Phone one'
+                }, {
+                    dataField: 'phone_two',
+                    text: 'Phone two'
+                },
+                {
+                    dataField: 'email_one',
+                    text: 'Email One'
+                }, {
+                    dataField: 'email_two',
+                    text: 'Email Two'
+                }, {
+                    dataField: 'city',
+                    text: 'City'
+                },
+                {
+                    dataField: 'country',
+                    text: 'Country'
+                }, {
+                    dataField: 'education',
+                    text: 'Education'
+                }, {
+                    dataField: 'work',
+                    text: 'Work'
+                },
+                {
+                    dataField: 'title',
+                    text: 'Title'
+                }, {
+                    dataField: 'resume',
+                    text: 'Resume'
+                }, {
+                    dataField: 'resume_type',
+                    text: 'Resume Type'
+                },
+                {
+                    dataField: 'answer_one',
+                    text: 'Answer One'
+                }, {
+                    dataField: 'answer_two',
+                    text: 'Answer Two'
+                }, {
+                    dataField: 'answer_three',
+                    text: 'Answer Three'
+                },
+                {
+                    dataField: 'answer_four',
+                    text: 'Answer Four'
+                }, {
+                    dataField: 'answer_five',
+                    text: 'Answer Five'
+                }, {
+                    dataField: 'answer_six',
+                    text: 'Answer Six'
+                },
+                {
+                    dataField: 'answer_seven',
+                    text: 'Answer Seven'
+                }, {
+                    dataField: 'answer_eight',
+                    text: 'Answer Eight'
+                }, {
+                    dataField: 'answer_nine',
+                    text: 'Answer Nine'
+                }
+            ]
         };
     }
 
@@ -141,7 +215,7 @@ class Answer extends Component {
         ];
 
         this.setState({
-            mergeDataList : data
+            mergeDataList: data
         })
     }
 
@@ -150,8 +224,8 @@ class Answer extends Component {
         // window.open('http://localhost:3000/sample.csv', '_self')
     }
 
-    handlerMenu(e){
-      //  console.log(e.target.value);
+    handlerMenu(e) {
+        //  console.log(e.target.value);
     }
 
 
@@ -163,30 +237,30 @@ class Answer extends Component {
             </option>
         ));
 
-        const tableBody = this.state.mergeDataList.map(i => (
-            <tr>
-                <td scope="col">{i.name}</td>
-                <td scope="col">{i.phone_one}</td>
-                <td scope="col">{i.phone_two}</td>
-                <td scope="col">{i.email_one}</td>
-                <td scope="col">{i.email_two}</td>
-                <td scope="col">{i.city}</td>
-                <td scope="col">{i.country}</td>
-                <td scope="col">{i.education}</td>
-                <td scope="col">{i.work}</td>
-                <td scope="col">{i.title}</td>
-                <td scope="col">{i.resume}</td>
-                <td scope="col">{i.resume_type}</td>
-                <td scope="col">{i.answer_one}</td>
-                <td scope="col">{i.answer_two}</td>
-                <td scope="col">{i.answer_three}</td>
-                <td scope="col">{i.answer_four}</td>
-                <td scope="col">{i.answer_five}</td>
-                <td scope="col">{i.answer_six}</td>
-                <td scope="col">{i.answer_seven}</td>
-                <td scope="col">{i.answer_eight}</td>
-                <td scope="col">{i.answer_nine}</td>
-            </tr>
+        const data = this.state.mergeDataList.map(i => (
+            {
+                name: i.name,
+                phone_one: i.phone_one,
+                phone_two: i.phone_two,
+                email_one: i.email_one,
+                email_two: i.email_two,
+                city: i.city,
+                country: i.country,
+                education: i.education,
+                work: i.work,
+                title: i.title,
+                resume: i.resume,
+                resume_type: i.resume_type,
+                answer_one: i.answer_one,
+                answer_two: i.answer_two,
+                answer_three: i.answer_three,
+                answer_four: i.answer_four,
+                answer_five: i.answer_five,
+                answer_six: i.answer_six,
+                answer_seven: i.answer_seven,
+                answer_eight: i.answer_eight,
+                answer_nine: i.answer_nine
+            }
         ));
 
 
@@ -221,38 +295,9 @@ class Answer extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="table-bs">
-                        <table bordered className="table table-responsive ">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Full Name</th>
-                                    <th scope="col">Phone 1</th>
-                                    <th scope="col">Phone 2</th>
-                                    <th scope="col">Email 1</th>
-                                    <th scope="col">Email 2</th>
-                                    <th scope="col">City</th>
-                                    <th scope="col">Country</th>
-                                    <th scope="col">Education</th>
-                                    <th scope="col">Work</th>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Resume</th>
-                                    <th scope="col">Resume Type</th>
-                                    <th scope="col">Answer 1</th>
-                                    <th scope="col">Answer 2</th>
-                                    <th scope="col">Answer 3</th>
-                                    <th scope="col">Answer 4</th>
-                                    <th scope="col">Answer 5</th>
-                                    <th scope="col">Answer 6</th>
-                                    <th scope="col">Answer 7</th>
-                                    <th scope="col">Answer 8</th>
-                                    <th scope="col">Answer 9</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {tableBody}
+                    <div className="table-bs" style={{ overflow: 'scroll'}}>
+                        <BootstrapTable  keyField='id' data={data} columns={this.state.columns} pagination={paginationFactory()} />
 
-                            </tbody>
-                        </table>
                     </div>
 
                 </div>
